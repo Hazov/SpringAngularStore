@@ -23,40 +23,33 @@ public class CartController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     Cart getCart(){
-        return getUserCart();
+        return cartService.getUserCart();
     }
 
     @PutMapping(value = "/add")
     void addToCart(@RequestBody Product product) {
-        cartService.addProductToCart(getUserCart(), product);
+        cartService.addProductToCart(cartService.getUserCart(), product);
     }
 
 
     @PutMapping ("/delete")
     Cart removeFromCart(@RequestBody Product product) {
-        Cart cartById = getUserCart();
+        Cart cartById = cartService.getUserCart();
         cartService.removeProductFromCart(cartById, product);
         return cartById;
     }
     @PutMapping ("/inc")
     void incrementProductFromCart(@RequestBody Product product) {
-        cartService.addProductToCart(getUserCart(), product);
+        cartService.addProductToCart(cartService.getUserCart(), product);
     }
     @PutMapping ("/dec")
     void decrementProductFromCart(@RequestBody Product product) {
-        cartService.removeOneProductFromCart(getUserCart(), product);
+        cartService.removeOneProductFromCart(cartService.getUserCart(), product);
     }
 
-    Cart getUserCart(){
-        return getCartByUserId(getCurrentUser());
-    }
 
-    User getCurrentUser(){
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.getUserByUsername(principal.getUsername());
-    }
-    Cart getCartByUserId(User user){
-        return cartService.getCartById(user.getCart().getId());
-    }
+
+
+
 }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voronasever.voronaStore.model.Cart;
 import ru.voronasever.voronaStore.model.Product;
+import ru.voronasever.voronaStore.model.User;
 import ru.voronasever.voronaStore.repositories.ICartRepo;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 public class CartService {
     @Autowired
     ICartRepo cartRepository;
+    @Autowired
+    UserService userService;
 
     @Transactional
     public void addProductToCart(Cart cart, Product product){
@@ -43,5 +46,11 @@ public class CartService {
             }
         }
         cartRepository.save(userCart);
+    }
+    public Cart getUserCart(){
+        return getCartByUserId(userService.getCurrentUser());
+    }
+    Cart getCartByUserId(User user){
+        return getCartById(user.getCart().getId());
     }
 }
