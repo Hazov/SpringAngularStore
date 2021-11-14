@@ -12,7 +12,7 @@ public class AddressController {
     UserService userService;
 
     String getAddresses(){
-
+        return "";
     }
 
 }

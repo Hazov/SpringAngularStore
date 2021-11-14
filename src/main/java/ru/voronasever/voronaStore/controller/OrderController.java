@@ -16,7 +16,7 @@ public class OrderController {
     @GetMapping("/addresses")
     String getAddresses(){
         User currentUser = getCurrentUser();
-
+        return "";
     }
     User getCurrentUser(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
