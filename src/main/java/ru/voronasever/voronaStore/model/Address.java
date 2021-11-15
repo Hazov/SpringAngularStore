@@ -18,7 +18,4 @@ public class Address {
     Short id;
     @Column(name = "address_path")
     String path;
-    @Column
-    @ManyToOne
-    User owner;
 }

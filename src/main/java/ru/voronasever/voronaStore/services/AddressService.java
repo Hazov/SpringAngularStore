@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.voronasever.voronaStore.model.Address;
 import ru.voronasever.voronaStore.model.User;
+import ru.voronasever.voronaStore.payload.request.NewAddressStr;
 import ru.voronasever.voronaStore.repositories.IAddressRepo;
 
 import java.util.ArrayList;
@@ -14,20 +15,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class AddressService {
+    @Autowired
     IAddressRepo addressRepository;
     @Autowired
     UserService userService;
 
     public List<String> getAddresses() {
-        return getCurrentUser().getAddresses().stream().map(Address::getPath).collect(Collectors.toList());
+        Collection<Address> addresses = getCurrentUser().getAddresses();
+        return addresses.stream().map(Address::getPath).collect(Collectors.toList());
     }
 
-    public void addAddress(String addressPath) {
-        User currentUser = getCurrentUser();
-        Address address = new Address((short) 0,addressPath,currentUser);
-        currentUser.getAddresses().add(address);
-        addressRepository.save(address);
 
+    public List<String> addAddress(String addressPath) {
+        User user = getCurrentUser();
+        Address address = new Address((short) 0, addressPath);
+        Address saveAddress = addressRepository.save(address);
+        Collection<Address> addresses = user.getAddresses();
+        addresses.add(saveAddress);
+        userService.save(user);
+        return addresses.stream().map(Address::getPath).collect(Collectors.toList());
     }
 
     User getCurrentUser(){

@@ -11,10 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.voronasever.voronaStore.model.Cart;
-import ru.voronasever.voronaStore.model.Role;
-import ru.voronasever.voronaStore.model.RoleEnum;
-import ru.voronasever.voronaStore.model.User;
+import ru.voronasever.voronaStore.model.*;
 import ru.voronasever.voronaStore.payload.request.ForgotPasswordRequest;
 import ru.voronasever.voronaStore.payload.request.LoginRequest;
 import ru.voronasever.voronaStore.payload.request.SignupRequest;
@@ -27,6 +24,7 @@ import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
 import ru.voronasever.voronaStore.services.UserService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +99,7 @@ public class AuthController {
         User user = new User(0, signUpRequest.getLogin(),
                 signUpRequest.getLogin(), encoder.encode(signUpRequest.getPass()),
                 "", null, null,
-                null, null, null);
+                null, null, new ArrayList<Address>());
 
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
