@@ -20,12 +20,15 @@ public class Order {
     @JoinColumn(name = "order_owner")
     @OneToOne
     User owner;
+    @Column(name = "order_phonenumber")
+    String phoneNumber;
     @Column(name = "order_amount")
     int amount;
     @Column(name = "order_items")
-    @OneToMany
+    @ManyToMany
     Collection<Product> items;
     @Column(name = "order_address")
     @OneToMany
-    Collection<Address> addresses;
+    Collection<Address> address;
 }
+
