@@ -7,6 +7,7 @@ import ru.voronasever.voronaStore.model.Cart;
 import ru.voronasever.voronaStore.model.Product;
 import ru.voronasever.voronaStore.model.User;
 import ru.voronasever.voronaStore.payload.response.SortedCartResponse;
+import ru.voronasever.voronaStore.payload.response.SortedProduct;
 import ru.voronasever.voronaStore.repositories.ICartRepo;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class CartService {
     @Transactional
     public void addProductToCart(Cart cart, Product product){
         cart.getProducts().add(product);
-        //cartRepository.save(cart);
+        cartRepository.save(cart);
     }
 
     @Transactional
@@ -68,5 +69,15 @@ public class CartService {
     public void resetCart(Cart cart) {
         cart.setProducts(new ArrayList<>());
         cartRepository.save(cart);
+    }
+    public SortedCartResponse getSortedCart2(){
+        Cart cart = getCart();
+        int totalPrice = 0;
+        List<SortedProduct> sortedProducts = cartRepository.getSortedProducts(cart.getId());
+        for (SortedProduct s:sortedProducts)
+            totalPrice += s.getAmount();
+        System.out.println(totalPrice);
+        return new SortedCartResponse(sortedProducts, totalPrice);
+
     }
 }

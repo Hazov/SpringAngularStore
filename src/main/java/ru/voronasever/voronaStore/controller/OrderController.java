@@ -1,6 +1,7 @@
 package ru.voronasever.voronaStore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -27,17 +28,23 @@ public class OrderController {
     CartService cartService;
 
     @PostMapping(value = "/create")
-    void createOrder(@RequestBody CreateOrderRequest orderRequest){
-        String addressStr = orderRequest.getAddress();
-        Cart cart = cartService.getCart();
-        if(cart.getProducts().size() <= 0 || addressStr == null) return;
-        User currentUser = getCurrentUser();
-        String phoneNumber = orderRequest.getPhoneNumber();
-        Address address = addressService.getAddress(addressStr);
-        int totalPrice = cartService.getTotalPrice(cart);
-        Order order = new Order(0L, currentUser, phoneNumber, totalPrice, cart.getProducts(), address);
-        cartService.resetCart(cart);
-        orderService.createNewOrder(order);
+    boolean createOrder(@RequestBody CreateOrderRequest orderRequest){
+        try {
+            String addressStr = orderRequest.getAddress();
+            Cart cart = cartService.getCart();
+            String phoneNumber = orderRequest.getPhoneNumber();
+            if(cart.getProducts().size() <= 0 || addressStr == null || phoneNumber == null) return false;
+            User currentUser = getCurrentUser();
+            Address address = addressService.getAddress(addressStr);
+            int totalPrice = cartService.getTotalPrice(cart);
+            Order order = new Order(0L, currentUser, phoneNumber, totalPrice, cart.getProducts(), address);
+            cartService.resetCart(cart);
+            orderService.createNewOrder(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 
     }
     User getCurrentUser(){

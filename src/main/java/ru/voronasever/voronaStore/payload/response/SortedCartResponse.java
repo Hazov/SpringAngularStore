@@ -31,11 +31,14 @@ public class SortedCartResponse {
 
         this.totalPrice = 0;
         countedProducts.forEach((product, count) -> {
-            SortedProduct sortedProduct = new SortedProduct(product, count);
-            sortedProducts.add(sortedProduct);
-            totalPrice += sortedProduct.getAmount();
+           // SortedProduct sortedProduct = new SortedProduct(product, count);
+           // sortedProducts.add(sortedProduct);
+           // totalPrice += sortedProduct.getAmount();
         });
+    }
 
-
+    public SortedCartResponse(List<SortedProduct> sortedProducts, int totalPrice) {
+        this.sortedProducts = sortedProducts;
+        this.totalPrice = totalPrice;
     }
 }
