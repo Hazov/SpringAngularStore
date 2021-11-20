@@ -3,6 +3,7 @@ package ru.voronasever.voronaStore.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.voronasever.voronaStore.payload.request.CreateOrderRequest;
 
 
 import javax.persistence.*;
@@ -22,13 +23,15 @@ public class Order {
     User owner;
     @Column(name = "order_phonenumber")
     String phoneNumber;
-    @Column(name = "order_amount")
-    int amount;
-    @Column(name = "order_items")
+    @Column(name = "order_totalprice")
+    int totalPrice;
+    @Column(name = "order_totalprice")
     @ManyToMany
     Collection<Product> items;
-    @Column(name = "order_address")
-    @OneToMany
-    Collection<Address> address;
+    @JoinColumn(name = "order_address")
+    @ManyToOne
+    Address address;
+
+
 }
 

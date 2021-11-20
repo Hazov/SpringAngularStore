@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.voronasever.voronaStore.model.Cart;
 import ru.voronasever.voronaStore.model.Product;
 import ru.voronasever.voronaStore.model.User;
-import ru.voronasever.voronaStore.payload.response.SortedCartWithAmountResponse;
+import ru.voronasever.voronaStore.payload.response.SortedCartResponse;
 import ru.voronasever.voronaStore.repositories.ICartRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +22,7 @@ public class CartService {
     @Transactional
     public void addProductToCart(Cart cart, Product product){
         cart.getProducts().add(product);
-        cartRepository.save(cart);
+        //cartRepository.save(cart);
     }
 
     @Transactional
@@ -51,12 +52,21 @@ public class CartService {
     public Cart getCart(){
         return getCartByUserId(userService.getCurrentUser());
     }
-    public SortedCartWithAmountResponse getSortedCart(){
+    public SortedCartResponse getSortedCart(){
         Cart cart = getCart();
 
-        return
+        return new SortedCartResponse(cart);
     }
     Cart getCartByUserId(User user){
         return getCartById(user.getCart().getId());
+    }
+
+    public int getTotalPrice(Cart cart) {
+        return cartRepository.getTotalPrice(cart.getId());
+    }
+
+    public void resetCart(Cart cart) {
+        cart.setProducts(new ArrayList<>());
+        cartRepository.save(cart);
     }
 }

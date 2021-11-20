@@ -9,7 +9,6 @@ import ru.voronasever.voronaStore.services.UserService;
 import java.util.List;
 
 @RestController
-
 @RequestMapping("api/v1/addresses")
 public class AddressController {
     @Autowired

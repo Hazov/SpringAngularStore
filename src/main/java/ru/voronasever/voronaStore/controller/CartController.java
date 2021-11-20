@@ -1,10 +1,11 @@
 package ru.voronasever.voronaStore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.voronasever.voronaStore.model.Cart;
 import ru.voronasever.voronaStore.model.Product;
+import ru.voronasever.voronaStore.payload.response.SortedCartResponse;
 import ru.voronasever.voronaStore.services.CartService;
 import ru.voronasever.voronaStore.services.UserService;
 
@@ -18,31 +19,34 @@ public class CartController {
     UserService userService;
 
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    Cart getSortedCart(){
-        return cartService.SortedCartWithAmountResponse();
+    @GetMapping()
+    @ResponseBody
+    ResponseEntity<?> getSortedCart(){
+        SortedCartResponse sortedCart = cartService.getSortedCart();
+        return ResponseEntity.ok().body(sortedCart);
     }
 
     @PutMapping(value = "/add")
-    Cart addToCart(@RequestBody Product product) {
-        cartService.addProductToCart(cartService.SortedCartWithAmountResponse(), product);
+    ResponseEntity<?>  addToCart(@RequestBody Product product) {
+        cartService.addProductToCart(cartService.getCart(), product);
         return getSortedCart();
+
     }
 
     @PutMapping ("/delete")
-    Cart removeFromCart(@RequestBody Product product) {
-        Cart cartById = cartService.SortedCartWithAmountResponse();
+    ResponseEntity<?>  removeFromCart(@RequestBody Product product) {
+        Cart cartById = cartService.getCart();
         cartService.removeProductFromCart(cartById, product);
-        return cartById;
+        return getSortedCart();
     }
     @PutMapping ("/inc")
-    Cart incrementProductFromCart(@RequestBody Product product) {
-        cartService.addProductToCart(cartService.SortedCartWithAmountResponse(), product);
+    ResponseEntity<?>  incrementProductFromCart(@RequestBody Product product) {
+        cartService.addProductToCart(cartService.getCart(), product);
         return getSortedCart();
     }
     @PutMapping ("/dec")
-    Cart decrementProductFromCart(@RequestBody Product product) {
-        cartService.removeOneProductFromCart(cartService.SortedCartWithAmountResponse(), product);
+    ResponseEntity<?>  decrementProductFromCart(@RequestBody Product product) {
+        cartService.removeOneProductFromCart(cartService.getCart(), product);
         return getSortedCart();
     }
 

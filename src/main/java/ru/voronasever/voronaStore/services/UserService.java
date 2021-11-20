@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.voronasever.voronaStore.model.Order;
 import ru.voronasever.voronaStore.model.User;
 import ru.voronasever.voronaStore.repositories.IUserRepo;
 
@@ -30,10 +31,6 @@ public class UserService {
     public boolean existsByName(String login) {
         return userRepository.existsByName(login);
     }
-    public User findUserByLogin(String email){
-        return userRepository.findUserByLogin(email);
-    }
-
 
     public User getUserByUsername(String username) {
         return userRepository.findUserByName(username);

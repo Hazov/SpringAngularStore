@@ -28,7 +28,7 @@ public class AddressService {
 
     public List<String> addAddress(String addressPath) {
         User user = getCurrentUser();
-        Address address = new Address((short) 0, addressPath);
+        Address address = new Address(0L, addressPath);
         Address saveAddress = addressRepository.save(address);
         Collection<Address> addresses = user.getAddresses();
         addresses.add(saveAddress);
@@ -38,5 +38,16 @@ public class AddressService {
 
     User getCurrentUser(){
         return userService.getCurrentUser();
+    }
+
+    public Address getAddress(String addressPath) {
+        Address address = addressRepository.findByPath(addressPath);
+        if(address == null){
+            address = new Address(0L,addressPath);
+            User currentUser = getCurrentUser();
+            currentUser.getAddresses().add(address);
+            userService.save(currentUser);
+        }
+            return address;
     }
 }
