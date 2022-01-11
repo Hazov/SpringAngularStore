@@ -33,9 +33,9 @@ public class User {
     @Column(name = "user_reviews")
     @OneToMany()
     Collection<Feedback> reviews;
-    @Column(name = "user_roles")
-    @ManyToMany()
-    Collection<Role> roles;
+    @JoinColumn(name = "user_role")
+    @OneToOne()
+    Role role;
     @OneToMany()
     Collection<Address> addresses;
 }

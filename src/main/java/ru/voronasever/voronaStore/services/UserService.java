@@ -78,9 +78,7 @@ public class UserService {
         Cart cart = new Cart();
         cartRepository.save(cart);
         user.setCart(cart);
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        user.setRoles(roles);
+        user.setRole(role);
         save(user);
     }
 }
