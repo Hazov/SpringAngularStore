@@ -50,9 +50,6 @@ public class AuthController {
     ICartRepo cartRepository;
 
     @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
     JwtUtils jwtUtils;
 
 
@@ -95,38 +92,13 @@ public class AuthController {
         }
 
         // Create new user's account
-        User user = new User(0, signUpRequest.getName(),
-                signUpRequest.getName(), encoder.encode(signUpRequest.getPass()),
-                "", null, null,
-                null, null, new ArrayList<Address>());
-
-        String strRole = signUpRequest.getRole();
-        Role role = null;
-
-        if (strRole == null) {
-           role = roleRepository.findByName(RoleEnum.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        } else {
-                switch (strRole) {
-                    case "admin":
-                        role = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        break;
-                    default:
-                        role = roleRepository.findByName(RoleEnum.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                }
-        }
-        Cart cart = new Cart();
-        cartRepository.save(cart);
-        user.setCart(cart);
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        user.setRoles(roles);
-        userService.save(user);
+        userService.createNewUserAccount(signUpRequest);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+
     @PostMapping("/forgotPassword")
     public ResponseEntity<?> registerUser(@Valid @RequestBody ForgotPasswordRequest forgotRequest) {
 
