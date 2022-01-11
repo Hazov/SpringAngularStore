@@ -17,11 +17,16 @@ public class SignupRequest {
 
     @NotBlank
     @Size(min = 3, max = 20)
-    private String login;
+    private String name;
 
     @NotBlank
     @Size(min = 6, max = 40)
     private String pass;
 
-    private Set<String> roles;
+    @NotBlank
+    @Size(min = 5, max = 40)
+    private String email;
+
+    @Size(max = 15)
+    private String role;
 }

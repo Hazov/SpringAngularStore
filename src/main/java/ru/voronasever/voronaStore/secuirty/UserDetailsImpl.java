@@ -29,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authority;
 
 
     public static UserDetailsImpl build(User user) {
@@ -43,6 +43,11 @@ public class UserDetailsImpl implements UserDetails {
                 user.getLogin(),
                 user.getPass(),
                 authorities);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     @Override

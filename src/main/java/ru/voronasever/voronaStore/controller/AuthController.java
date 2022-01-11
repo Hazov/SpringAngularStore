@@ -36,8 +36,7 @@ import java.util.stream.Collectors;
 public class AuthController {
     @Autowired
     MailSender mailSender;
-
-
+    
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -68,7 +67,7 @@ public class AuthController {
         System.out.println(jwt);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
+        List<String> roles = userDetails.getAuthority().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
@@ -83,50 +82,46 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userService.existsByName(signUpRequest.getLogin())) {
+        if (userService.existsByName(signUpRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userService.existsByLogin(signUpRequest.getLogin())) {
+        if (userService.existsByLogin(signUpRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        User user = new User(0, signUpRequest.getLogin(),
-                signUpRequest.getLogin(), encoder.encode(signUpRequest.getPass()),
+        User user = new User(0, signUpRequest.getName(),
+                signUpRequest.getName(), encoder.encode(signUpRequest.getPass()),
                 "", null, null,
                 null, null, new ArrayList<Address>());
 
-        Set<String> strRoles = signUpRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
+        String strRole = signUpRequest.getRole();
+        Role role = null;
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
+        if (strRole == null) {
+           role = roleRepository.findByName(RoleEnum.ROLE_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
         } else {
-            strRoles.forEach(role -> {
-                switch (role) {
+                switch (strRole) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
+                        role = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
                         break;
                     default:
-                        Role userRole = roleRepository.findByName(RoleEnum.ROLE_USER)
+                        role = roleRepository.findByName(RoleEnum.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
                 }
-            });
         }
         Cart cart = new Cart();
         cartRepository.save(cart);
         user.setCart(cart);
+        List<Role> roles = new ArrayList<>();
+        roles.add(role);
         user.setRoles(roles);
         userService.save(user);
 
