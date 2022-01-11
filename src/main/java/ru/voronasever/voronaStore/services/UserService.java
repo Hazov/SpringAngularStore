@@ -13,6 +13,7 @@ import ru.voronasever.voronaStore.repositories.IUserRepo;
 
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,8 +29,8 @@ public class UserService {
     PasswordEncoder encoder;
 
 
-    User getUserByEmail(String email){
-        return userRepository.findUserByEmail(email);
+    Optional<User> getUserByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
     public void save(User user) {
@@ -45,7 +46,7 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findUserByName(username);
+        return userRepository.findByName(username).orElseThrow();
     }
     User getCurrentUser(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.voronasever.voronaStore.payload.request.ForgotPasswordRequest;
 import ru.voronasever.voronaStore.payload.request.LoginRequest;
@@ -31,6 +32,8 @@ import java.util.stream.Collectors;
 public class AuthController {
     @Autowired
     MailSender mailSender;
+    @Autowired
+    PasswordEncoder encoder;
     
     @Autowired
     AuthenticationManager authenticationManager;
