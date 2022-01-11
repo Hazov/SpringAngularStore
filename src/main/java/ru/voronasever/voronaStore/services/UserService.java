@@ -13,11 +13,11 @@ import ru.voronasever.voronaStore.repositories.IUserRepo;
 
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
+    private static final int AUTO_INCREMENT = 0;
+
     @Autowired
     IUserRepo userRepository;
     @Autowired
@@ -29,15 +29,15 @@ public class UserService {
 
 
     User getUserByEmail(String email){
-        return userRepository.findUserByLogin(email);
+        return userRepository.findUserByEmail(email);
     }
 
     public void save(User user) {
         userRepository.save(user);
     }
 
-    public boolean existsByLogin(String login) {
-        return userRepository.existsByLogin(login);
+    public boolean existsByEmail(String login) {
+        return userRepository.existsByEmail(login);
     }
 
     public boolean existsByName(String login) {
@@ -53,8 +53,8 @@ public class UserService {
     }
 
     public void createNewUserAccount(SignupRequest signUpRequest) {
-        User user = new User(0, signUpRequest.getName(),
-                signUpRequest.getName(), encoder.encode(signUpRequest.getPass()),
+        User user = new User(AUTO_INCREMENT, signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPass()), signUpRequest.getName(),
                 "", null, null,
                 null, null, new ArrayList<Address>());
 

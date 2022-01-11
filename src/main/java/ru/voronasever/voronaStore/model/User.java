@@ -16,12 +16,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     Integer id;
-    @Column(name = "user_name")
-    String name;
-    @Column(name = "user_login")
-    String login;
+    @Column(name = "user_email")
+    String email;
     @Column(name = "user_pass")
     String pass;
+    @Column(name = "user_name")
+    String name;
     @Column(name = "user_avatar")
     String avatar;
     @JoinColumn(name = "user_cart")

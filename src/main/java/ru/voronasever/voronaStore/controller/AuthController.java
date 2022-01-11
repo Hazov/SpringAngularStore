@@ -9,9 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.voronasever.voronaStore.model.*;
 import ru.voronasever.voronaStore.payload.request.ForgotPasswordRequest;
 import ru.voronasever.voronaStore.payload.request.LoginRequest;
 import ru.voronasever.voronaStore.payload.request.SignupRequest;
@@ -24,10 +22,7 @@ import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
 import ru.voronasever.voronaStore.services.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -57,7 +52,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getName(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -71,8 +66,8 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
                 userDetails.getId(),
-                userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getUsername(),
                 roles));
 
     }
@@ -85,7 +80,7 @@ public class AuthController {
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userService.existsByLogin(signUpRequest.getName())) {
+        if (userService.existsByEmail(signUpRequest.getName())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -104,7 +99,7 @@ public class AuthController {
 
         String email = forgotRequest.getEmail();
         System.out.println(email);
-        if(userService.existsByLogin(forgotRequest.getEmail())){
+        if(userService.existsByEmail(forgotRequest.getEmail())){
             final SimpleMailMessage simpleMail = new SimpleMailMessage();
             simpleMail.setFrom("fs_belayavorona@mail.ru");
             simpleMail.setTo(email);
