@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepo extends CrudRepository<User, Integer> {
-    Optional<User> findByName(String username);
+    User findByName(String username);
 
     Boolean existsByName(String username);
 

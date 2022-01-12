@@ -25,11 +25,11 @@ public class UserDetailsImpl implements UserDetails {
 
     private String email;
 
-    private String username;
-
-
     @JsonIgnore
     private String password;
+
+    private String username;
+
 
     private Collection<? extends GrantedAuthority> authority;
 
@@ -41,9 +41,9 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 user.getId(),
-                user.getName(),
                 user.getEmail(),
                 user.getPass(),
+                user.getName(),
                 authorities);
     }
 

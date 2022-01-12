@@ -10,6 +10,7 @@ import ru.voronasever.voronaStore.payload.request.SignupRequest;
 import ru.voronasever.voronaStore.repositories.ICartRepo;
 import ru.voronasever.voronaStore.repositories.IRoleRepo;
 import ru.voronasever.voronaStore.repositories.IUserRepo;
+import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
 
 
 import java.util.ArrayList;
@@ -46,11 +47,11 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByName(username).orElseThrow();
+        return userRepository.findByName(username);
     }
     User getCurrentUser(){
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return getUserByUsername(principal.getUsername());
+        UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return getUserByEmail(principal.getEmail()).orElseThrow();
     }
 
     public void createNewUserAccount(SignupRequest signUpRequest) {
@@ -78,6 +79,7 @@ public class UserService {
         }
         Cart cart = new Cart();
         cartRepository.save(cart);
+
         user.setCart(cart);
         user.setRole(role);
         save(user);

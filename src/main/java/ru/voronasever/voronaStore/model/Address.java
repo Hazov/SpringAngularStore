@@ -18,5 +18,4 @@ public class Address {
     Long id;
     @Column(name = "address_path")
     String path;
-
 }

@@ -26,12 +26,13 @@ public class AddressService {
     }
 
 
+    //TODO REFACTOR (Single Responsibility)
     public List<String> addAddress(String addressPath) {
         User user = getCurrentUser();
         Address address = new Address(0L, addressPath);
-        Address saveAddress = addressRepository.save(address);
+        Address savedAddress = addressRepository.save(address);
         Collection<Address> addresses = user.getAddresses();
-        addresses.add(saveAddress);
+        addresses.add(savedAddress);
         userService.save(user);
         return addresses.stream().map(Address::getPath).collect(Collectors.toList());
     }

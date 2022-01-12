@@ -36,6 +36,7 @@ public class User {
     @JoinColumn(name = "user_role")
     @OneToOne()
     Role role;
+    @Column(name = "user_addresses")
     @OneToMany()
     Collection<Address> addresses;
 }
