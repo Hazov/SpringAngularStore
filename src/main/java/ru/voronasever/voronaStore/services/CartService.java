@@ -51,14 +51,18 @@ public class CartService {
         cartRepository.save(userCart);
     }
     public Cart getCart(){
-        return getCartByUserId(userService.getCurrentUser());
+        return getCartByUser(userService.getCurrentUser());
+    }
+
+    public Cart getCart(User user){
+        return getCartByUser(user);
     }
     public SortedCartResponse getSortedCart(){
         Cart cart = getCart();
 
         return new SortedCartResponse(cart);
     }
-    Cart getCartByUserId(User user){
+    Cart getCartByUser(User user){
         return getCartById(user.getCart().getId());
     }
 

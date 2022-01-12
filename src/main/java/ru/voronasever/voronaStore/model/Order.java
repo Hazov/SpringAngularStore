@@ -18,9 +18,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     Long id;
-    @JoinColumn(name = "order_owner")
-    @OneToOne
-    User owner;
     @Column(name = "order_phonenumber")
     String phoneNumber;
     @Column(name = "order_totalprice")
@@ -31,6 +28,8 @@ public class Order {
     @JoinColumn(name = "order_address")
     @ManyToOne
     Address address;
+    @Column(name = "order_amount")
+    Integer amount;
 
 
 }

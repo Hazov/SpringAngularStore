@@ -29,20 +29,19 @@ public class OrderController {
 
     @PostMapping(value = "/create")
     boolean createOrder(@RequestBody CreateOrderRequest orderRequest){
+        final long AUTO_INCREMENT = 0;
         try {
             String addressStr = orderRequest.getAddress();
-            Cart cart = cartService.getCart();
             String phoneNumber = orderRequest.getPhoneNumber();
+            Cart cart = cartService.getCart();
             if(cart.getProducts().size() <= 0 || addressStr == null || phoneNumber == null) return false;
-            User currentUser = getCurrentUser();
             Address address = addressService.getAddress(addressStr);
             int totalPrice = cartService.getTotalPrice(cart);
-            Order order = new Order(0L, currentUser, phoneNumber, totalPrice, cart.getProducts(), address);
+            Order order = new Order(AUTO_INCREMENT, phoneNumber, totalPrice, cart.getProducts(), address, cartService.getTotalPrice(cart));
             cartService.resetCart(cart);
             orderService.createNewOrder(order);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
         return true;
 
