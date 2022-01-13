@@ -30,7 +30,7 @@ public class UserService {
     PasswordEncoder encoder;
 
 
-    Optional<User> getUserByEmail(String email){
+    public Optional<User> getUserByEmail(String email){
         return userRepository.findByEmail(email);
     }
 
@@ -46,9 +46,6 @@ public class UserService {
         return userRepository.existsByName(login);
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByName(username);
-    }
     User getCurrentUser(){
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return getUserByEmail(principal.getEmail()).orElseThrow();

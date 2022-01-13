@@ -48,6 +48,6 @@ public class OrderController {
     }
     User getCurrentUser(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.getUserByUsername(principal.getUsername());
+        return userService.getUserByEmail(principal.getUsername()).orElseThrow();
     }
 }

@@ -80,7 +80,6 @@ public class CartService {
         List<SortedProduct> sortedProducts = cartRepository.getSortedProducts(cart.getId());
         for (SortedProduct s:sortedProducts)
             totalPrice += s.getAmount();
-        System.out.println(totalPrice);
         return new SortedCartResponse(sortedProducts, totalPrice);
 
     }

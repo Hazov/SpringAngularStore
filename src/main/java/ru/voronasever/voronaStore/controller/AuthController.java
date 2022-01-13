@@ -1,5 +1,6 @@
 package ru.voronasever.voronaStore.controller;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
@@ -20,6 +21,7 @@ import ru.voronasever.voronaStore.repositories.ICartRepo;
 import ru.voronasever.voronaStore.repositories.IRoleRepo;
 import ru.voronasever.voronaStore.secuirty.jwt.JwtUtils;
 import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
+import ru.voronasever.voronaStore.services.MailService;
 import ru.voronasever.voronaStore.services.UserService;
 
 import javax.validation.Valid;
@@ -31,10 +33,11 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/auth")
 public class AuthController {
     @Autowired
-    MailSender mailSender;
+    MailService mailService;
+
     @Autowired
     PasswordEncoder encoder;
-    
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -52,14 +55,13 @@ public class AuthController {
 
 
 
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        System.out.println(jwt);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthority().stream()
@@ -80,18 +82,11 @@ public class AuthController {
         if (userService.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
         userService.createNewUserAccount(signUpRequest);
-
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
@@ -101,21 +96,14 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody ForgotPasswordRequest forgotRequest) {
 
         String email = forgotRequest.getEmail();
-        System.out.println(email);
-        if(userService.existsByEmail(forgotRequest.getEmail())){
-            final SimpleMailMessage simpleMail = new SimpleMailMessage();
-            simpleMail.setFrom("fs_belayavorona@mail.ru");
-            simpleMail.setTo(email);
-            simpleMail.setSubject("Восстановление учетной записи на voronasever.ru");
-            //String link = remind/?key=                 TODO шифрование в ссылку
-            simpleMail.setText("По вашему адресу был сделан запрос на восстановление учетной записи на ВоронаСевер.Ру" +
-                    " (www.voronasever.ru).\n" +
-                    "\n" + "Для получения новых данных пройдите по этой ссылке: ");
-
-            mailSender.send(simpleMail);
-            System.out.println("super");
+        if(userService.existsByEmail(email)){
+            mailService.sendRemindPasswordMessageToEmail(email);
             return ResponseEntity.ok(new MessageResponse("На ваш адрес: " + email + " было отправлено письмо."));
         }
         return ResponseEntity.ok(new MessageResponse("Пользователя с таким email не существует"));
     }
+
+
+
+
 }
