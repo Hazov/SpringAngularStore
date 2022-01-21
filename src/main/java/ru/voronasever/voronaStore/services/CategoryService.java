@@ -7,20 +7,17 @@ import ru.voronasever.voronaStore.model.Category;
 import ru.voronasever.voronaStore.repositories.ICategoryRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService{
     private ICategoryRepo categoryRepo;
-    @Autowired
-    public void setCategoryRepo(ICategoryRepo categoryRepo) {
-        this.categoryRepo = categoryRepo;
-    }
     @Transactional
     public List<Category> getAllCategory() {
         return (List<Category>) categoryRepo.findAll();
     }
     @Transactional
-    public Category getCategoryByName(String name) {
+    public Optional<Category> getCategoryByName(String name) {
         return categoryRepo.findCategoryByName(name);
     }
 }

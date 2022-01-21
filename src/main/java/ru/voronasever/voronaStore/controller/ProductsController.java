@@ -1,6 +1,7 @@
 package ru.voronasever.voronaStore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.voronasever.voronaStore.model.Category;
 import ru.voronasever.voronaStore.model.Product;
@@ -9,7 +10,7 @@ import ru.voronasever.voronaStore.services.CategoryService;
 import ru.voronasever.voronaStore.services.ProductService;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 @RestController
@@ -22,13 +23,15 @@ public class ProductsController {
 
     @PostMapping()
     List<Product> showProducts(@RequestBody GetProductsRequest productRequest){
+        int currentPage = productRequest.getCurrentPage();
+        int pageSize = productRequest.getProductsOnPage();
+        PageRequest pageRequest = PageRequest.of(currentPage, pageSize);
         String currentCategory = productRequest.getCategory();
-        if(!currentCategory.equals("all")){
-            Category category = categoryService.getCategoryByName(currentCategory);
-            return productService.getPageOfProductsByCategory(
-                    category, productRequest.getProductsOnPage(), productRequest.getCurrentPage());
+        Optional<Category> category = categoryService.getCategoryByName(currentCategory);
+        if(category.isPresent()){
+            return productService.findAllByCategory(category.get(), pageRequest);
         }
-       return productService.getPageOfProducts(productRequest.getProductsOnPage(), productRequest.getCurrentPage());
+       return productService.findAll(pageRequest);
     }
 
     @PostMapping("/create")
@@ -42,12 +45,14 @@ public class ProductsController {
         productService.removeProduct(product);
     }
 
-    @GetMapping("/count/{categoryStr}") //TODO cache
-    Long getProductsCount(@PathVariable String categoryStr){
-        if(!categoryStr.equals("all")){
-            Category category = categoryService.getCategoryByName(categoryStr);
-            return productService.getCountOfProductsByCategory(category);
-        }
-        return productService.getCountOfProducts();
-    }
+//    @GetMapping("/count/{categoryStr}") //TODO cache
+//    Integer getProductsCount(@PathVariable String categoryStr){
+//        Optional<Category> category = categoryService.getCategoryByName(categoryStr);
+//        if(category.isPresent()){
+//            return productService.getPagesByCategoryCount(category.get());
+//            //return productService.getCountOfProductsByCategory(category.get());
+//        }
+//        return productService.getAllPegesCount();
+//        //return productService.getCountOfProducts();
+//    }
 }
