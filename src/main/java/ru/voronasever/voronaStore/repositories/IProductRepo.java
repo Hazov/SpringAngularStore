@@ -16,7 +16,7 @@ public interface IProductRepo extends PagingAndSortingRepository<Product, Intege
     long count();
     long countProductByCategory(Category category);
 
-    Page<Product> findAll(Pageable pageable);
+
     Page<Product> findAllByCategory(Category category, Pageable pageable);
 }
 //

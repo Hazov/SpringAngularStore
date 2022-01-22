@@ -6,11 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.voronasever.voronaStore.model.Category;
 import ru.voronasever.voronaStore.repositories.ICategoryRepo;
 
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CategoryService{
+    @Autowired
     private ICategoryRepo categoryRepo;
     @Transactional
     public List<Category> getAllCategory() {
