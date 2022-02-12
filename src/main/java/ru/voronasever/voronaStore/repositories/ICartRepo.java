@@ -26,7 +26,7 @@ public interface ICartRepo extends CrudRepository<Cart, Integer> {
             "       p.product_description AS description,\n" +
             "       p.product_price       AS price,\n" +
             "       p.product_count       AS countInStock,\n" +
-            "       p.product_reviews     AS feedbacks,\n" +
+            "       p.product_reviews     AS review,\n" +
             "       COUNT(cp.product_id)  AS countSelected,\n" +
             "       SUM(product_price)    as amount\n" +
             "from products as p\n" +

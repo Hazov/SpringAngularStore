@@ -54,8 +54,8 @@ public class UserService {
     public void createNewUserAccount(SignupRequest signUpRequest) {
         User user = new User(AUTO_INCREMENT, signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPass()), signUpRequest.getName(),
-                "", null, null,
-                null, null, new ArrayList<Address>());
+                "", null, new ArrayList<Product>(),
+                new ArrayList<Review>(), null, new ArrayList<Address>(), new ArrayList<Order>());
 
         String strRole = signUpRequest.getRole();
         Role role = null;

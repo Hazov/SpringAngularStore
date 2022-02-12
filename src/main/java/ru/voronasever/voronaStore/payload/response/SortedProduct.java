@@ -1,7 +1,7 @@
 package ru.voronasever.voronaStore.payload.response;
 
 import ru.voronasever.voronaStore.model.Category;
-import ru.voronasever.voronaStore.model.Feedback;
+import ru.voronasever.voronaStore.model.Review;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public interface SortedProduct {
 
     int getCountInStock();
 
-    Collection<Feedback> getFeedbacks();
+    Collection<Review> getReviews();
 
     int getCountSelected();
 

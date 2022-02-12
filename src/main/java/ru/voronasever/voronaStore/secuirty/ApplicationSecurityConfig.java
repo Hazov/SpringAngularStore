@@ -26,10 +26,8 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
-public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
@@ -41,11 +39,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter impl
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
     }
 
 
@@ -77,21 +70,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter impl
         return source;
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:4200")
-//                .allowedMethods("*");
-//    }
-//
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-
                     .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                   .csrf().disable()
-                    .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf().disable()
+                    .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                    .and()
                     .anonymous().and()
                     .servletApi().and()
                     .authorizeRequests()

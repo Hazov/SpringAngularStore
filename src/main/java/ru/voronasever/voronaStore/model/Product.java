@@ -1,14 +1,11 @@
 package ru.voronasever.voronaStore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @NoArgsConstructor
@@ -31,13 +28,14 @@ public class Product {
     @ManyToOne()
     @JoinColumn(name = "product_category")
     Category category;
-    @Column(name = "product_count")
-    int count;
+    @Column(name = "product_count_on_stock")
+    int countOnStock;
     @Column(name = "product_reviews")
-    @OneToMany()
-    Collection<Feedback> feedbacks;
-
-    @JsonIgnore()
-    @ManyToMany(mappedBy = "products")
-    Set<Cart> set = new HashSet<>();
+    @ManyToMany()
+    @JoinTable(
+            name = "products_reviews",
+            joinColumns = { @JoinColumn(name = "product_id") },
+            inverseJoinColumns = { @JoinColumn(name = "review_id") }
+    )
+    Collection<Review> reviews;
 }

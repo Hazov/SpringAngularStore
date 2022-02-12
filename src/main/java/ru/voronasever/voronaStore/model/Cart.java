@@ -31,8 +31,4 @@ public class Cart {
     )
     List<Product> products = new ArrayList<>();
 
-    @OneToOne
-    User owner;
-
-
 }

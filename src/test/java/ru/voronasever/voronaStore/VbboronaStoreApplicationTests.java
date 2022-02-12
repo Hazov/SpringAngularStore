@@ -11,5 +11,4 @@ class VbboronaStoreApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

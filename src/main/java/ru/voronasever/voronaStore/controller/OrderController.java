@@ -15,6 +15,8 @@ import ru.voronasever.voronaStore.services.CartService;
 import ru.voronasever.voronaStore.services.OrderService;
 import ru.voronasever.voronaStore.services.UserService;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("api/v1/order")
 public class OrderController {
@@ -29,6 +31,8 @@ public class OrderController {
 
     @PostMapping(value = "/create")
     boolean createOrder(@RequestBody CreateOrderRequest orderRequest){
+        User currentUser = getCurrentUser();
+        Date now = new Date(System.currentTimeMillis());
         final long AUTO_INCREMENT = 0;
         try {
             String addressStr = orderRequest.getAddress();
@@ -37,7 +41,7 @@ public class OrderController {
             if(cart.getProducts().size() <= 0 || addressStr == null || phoneNumber == null) return false;
             Address address = addressService.getAddress(addressStr);
             int totalPrice = cartService.getTotalPrice(cart);
-            Order order = new Order(AUTO_INCREMENT, phoneNumber, totalPrice, cart.getProducts(), address, cartService.getTotalPrice(cart));
+            Order order = new Order(AUTO_INCREMENT, now, phoneNumber, totalPrice, cart.getProducts(), address, cartService.getTotalPrice(cart), currentUser);
             cartService.resetCart(cart);
             orderService.createNewOrder(order);
         } catch (Exception e) {

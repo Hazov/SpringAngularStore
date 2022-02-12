@@ -10,18 +10,18 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "feedbacks")
-public class Feedback {
+@Entity(name = "reviews")
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feedback_id")
+    @Column(name = "review_id")
     Long id;
-    @JoinColumn(name = "feedback_owner")
+    @JoinColumn(name = "review_owner")
     @ManyToOne()
     User owner;
-    @Column(name = "feedback_raiting")
+    @Column(name = "review_evaluation")
     int raiting;
-    @Column(name = "feedback_comment")
+    @Column(name = "review_comment")
     String comment;
 
 

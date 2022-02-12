@@ -2,8 +2,8 @@ package ru.voronasever.voronaStore.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.voronasever.voronaStore.model.Feedback;
+import ru.voronasever.voronaStore.model.Review;
 
 @Repository
-public interface IFeedbackRepo extends CrudRepository<Feedback, Long> {
+public interface IReviewRepo extends CrudRepository<Review, Long> {
 }

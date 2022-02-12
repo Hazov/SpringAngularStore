@@ -16,27 +16,48 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     Integer id;
+
     @Column(name = "user_email")
     String email;
+
     @Column(name = "user_pass")
     String pass;
+
     @Column(name = "user_name")
     String name;
+
     @Column(name = "user_avatar")
     String avatar;
+
     @JoinColumn(name = "user_cart")
     @OneToOne
     Cart cart;
+
     @Column(name = "user_favourite")
-    @OneToMany()
+    @ManyToMany()
+    @JoinTable(name = "users_favourites",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "favourite_id") }
+    )
     Collection<Product> favourite;
+
     @Column(name = "user_reviews")
-    @OneToMany()
-    Collection<Feedback> reviews;
+    @ManyToMany()
+    @JoinTable(name = "users_reviews",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "review_id") }
+    )
+    Collection<Review> reviews;
+
     @JoinColumn(name = "user_role")
-    @OneToOne()
+    @ManyToOne()
     Role role;
+
     @Column(name = "user_addresses")
     @OneToMany()
     Collection<Address> addresses;
+
+    @Column(name = "user_orders")
+    @OneToMany
+    Collection<Order> orders;
 }
