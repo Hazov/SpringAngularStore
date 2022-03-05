@@ -1,4 +1,4 @@
-package ru.voronasever.voronaStore.repositories;
+package ru.voronasever.voronaStore.repositories.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -9,6 +9,6 @@ import ru.voronasever.voronaStore.model.RoleEnum;
 import java.util.Optional;
 
 @Repository
-public interface IRoleRepo extends CrudRepository<Role, Short> {
+public interface RoleRepository extends CrudRepository<Role, Short> {
     Optional<Role> findByName(RoleEnum name);
 }

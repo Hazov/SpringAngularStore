@@ -1,4 +1,4 @@
-package ru.voronasever.voronaStore.repositories;
+package ru.voronasever.voronaStore.repositories.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -8,7 +8,7 @@ import ru.voronasever.voronaStore.model.User;
 import java.util.Optional;
 
 @Repository
-public interface IUserRepo extends CrudRepository<User, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
     Boolean existsByName(String username);
 

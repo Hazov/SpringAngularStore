@@ -1,14 +1,11 @@
 package ru.voronasever.voronaStore.services;
 
-import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.voronasever.voronaStore.model.Address;
 import ru.voronasever.voronaStore.model.User;
-import ru.voronasever.voronaStore.payload.request.NewAddressStr;
-import ru.voronasever.voronaStore.repositories.IAddressRepo;
+import ru.voronasever.voronaStore.repositories.jpa.AddressRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class AddressService {
     @Autowired
-    IAddressRepo addressRepository;
+    AddressRepository addressRepository;
     @Autowired
     UserService userService;
 

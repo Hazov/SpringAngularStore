@@ -2,14 +2,13 @@ package ru.voronasever.voronaStore.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.voronasever.voronaStore.model.*;
 import ru.voronasever.voronaStore.payload.request.SignupRequest;
-import ru.voronasever.voronaStore.repositories.ICartRepo;
-import ru.voronasever.voronaStore.repositories.IRoleRepo;
-import ru.voronasever.voronaStore.repositories.IUserRepo;
+import ru.voronasever.voronaStore.repositories.jpa.CartRepository;
+import ru.voronasever.voronaStore.repositories.jpa.RoleRepository;
+import ru.voronasever.voronaStore.repositories.jpa.UserRepository;
 import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
 
 
@@ -21,11 +20,11 @@ public class UserService {
     private static final int AUTO_INCREMENT = 0;
 
     @Autowired
-    IUserRepo userRepository;
+    UserRepository userRepository;
     @Autowired
-    IRoleRepo roleRepository;
+    RoleRepository roleRepository;
     @Autowired
-    ICartRepo cartRepository;
+    CartRepository cartRepository;
     @Autowired
     PasswordEncoder encoder;
 
@@ -42,9 +41,6 @@ public class UserService {
         return userRepository.existsByEmail(login);
     }
 
-    public boolean existsByName(String login) {
-        return userRepository.existsByName(login);
-    }
 
     User getCurrentUser(){
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

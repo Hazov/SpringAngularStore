@@ -8,7 +8,7 @@ import ru.voronasever.voronaStore.model.Product;
 import ru.voronasever.voronaStore.model.User;
 import ru.voronasever.voronaStore.payload.response.SortedCartResponse;
 import ru.voronasever.voronaStore.payload.response.SortedProduct;
-import ru.voronasever.voronaStore.repositories.ICartRepo;
+import ru.voronasever.voronaStore.repositories.jpa.CartRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class CartService {
     @Autowired
-    ICartRepo cartRepository;
+    CartRepository cartRepository;
     @Autowired
     UserService userService;
 
@@ -57,11 +57,7 @@ public class CartService {
     public Cart getCart(User user){
         return getCartByUser(user);
     }
-    public SortedCartResponse getSortedCart(){
-        Cart cart = getCart();
 
-        return new SortedCartResponse(cart);
-    }
     Cart getCartByUser(User user){
         return getCartById(user.getCart().getId());
     }
@@ -74,7 +70,7 @@ public class CartService {
         cart.setProducts(new ArrayList<>());
         cartRepository.save(cart);
     }
-    public SortedCartResponse getSortedCart2(){
+    public SortedCartResponse getSortedCart(){
         Cart cart = getCart();
         int totalPrice = 0;
         List<SortedProduct> sortedProducts = cartRepository.getSortedProducts(cart.getId());

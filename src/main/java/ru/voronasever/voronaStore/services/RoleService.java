@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.voronasever.voronaStore.model.Role;
 import ru.voronasever.voronaStore.model.RoleEnum;
-import ru.voronasever.voronaStore.repositories.IRoleRepo;
-
-import java.util.Optional;
+import ru.voronasever.voronaStore.repositories.jpa.RoleRepository;
 
 @Service
 public class RoleService {
     @Autowired
-    IRoleRepo roleRepository;
+    RoleRepository roleRepository;
 
 
     public Role checkRole(String roleStr) {

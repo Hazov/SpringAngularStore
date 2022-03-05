@@ -1,4 +1,4 @@
-package ru.voronasever.voronaStore.repositories;
+package ru.voronasever.voronaStore.repositories.jpa;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +9,7 @@ import ru.voronasever.voronaStore.payload.response.SortedProduct;
 import java.util.List;
 
 @Repository
-public interface ICartRepo extends CrudRepository<Cart, Integer> {
+public interface CartRepository extends CrudRepository<Cart, Integer> {
 
     Cart getCartById(int Id);
 
@@ -26,7 +26,6 @@ public interface ICartRepo extends CrudRepository<Cart, Integer> {
             "       p.product_description AS description,\n" +
             "       p.product_price       AS price,\n" +
             "       p.product_count       AS countInStock,\n" +
-            "       p.product_reviews     AS review,\n" +
             "       COUNT(cp.product_id)  AS countSelected,\n" +
             "       SUM(product_price)    as amount\n" +
             "from products as p\n" +

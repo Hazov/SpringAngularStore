@@ -2,17 +2,16 @@ package ru.voronasever.voronaStore.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
 import ru.voronasever.voronaStore.model.RemindPass;
-import ru.voronasever.voronaStore.repositories.IRemindPassRepo;
+import ru.voronasever.voronaStore.repositories.jpa.RemindPassRepository;
 
 import java.util.Optional;
 
 @Service
 public class RemindPassService {
     @Autowired
-    IRemindPassRepo remindPassRepository;
+    RemindPassRepository remindPassRepository;
 
     public void save(RemindPass remindPass) {
         remindPassRepository.save(remindPass);

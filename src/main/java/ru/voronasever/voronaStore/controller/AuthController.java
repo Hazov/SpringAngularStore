@@ -1,10 +1,7 @@
 package ru.voronasever.voronaStore.controller;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,8 +14,8 @@ import ru.voronasever.voronaStore.payload.request.LoginRequest;
 import ru.voronasever.voronaStore.payload.request.SignupRequest;
 import ru.voronasever.voronaStore.payload.response.JwtResponse;
 import ru.voronasever.voronaStore.payload.response.MessageResponse;
-import ru.voronasever.voronaStore.repositories.ICartRepo;
-import ru.voronasever.voronaStore.repositories.IRoleRepo;
+import ru.voronasever.voronaStore.repositories.jpa.CartRepository;
+import ru.voronasever.voronaStore.repositories.jpa.RoleRepository;
 import ru.voronasever.voronaStore.secuirty.jwt.JwtUtils;
 import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
 import ru.voronasever.voronaStore.services.MailService;
@@ -45,10 +42,10 @@ public class AuthController {
     UserService userService;
 
     @Autowired
-    IRoleRepo roleRepository;
+    RoleRepository roleRepository;
 
     @Autowired
-    ICartRepo cartRepository;
+    CartRepository cartRepository;
 
     @Autowired
     JwtUtils jwtUtils;

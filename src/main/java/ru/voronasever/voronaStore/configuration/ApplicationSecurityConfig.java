@@ -1,4 +1,4 @@
-package ru.voronasever.voronaStore.secuirty;
+package ru.voronasever.voronaStore.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.voronasever.voronaStore.secuirty.UserDetailsServiceImpl;
 import ru.voronasever.voronaStore.secuirty.jwt.AuthEntryPointJwt;
 import ru.voronasever.voronaStore.secuirty.jwt.AuthTokenFilter;
 
@@ -74,7 +76,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                     .and()
                     .csrf().disable()
                     .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)

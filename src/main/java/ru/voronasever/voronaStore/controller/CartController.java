@@ -6,11 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.voronasever.voronaStore.model.Cart;
 import ru.voronasever.voronaStore.model.Product;
 import ru.voronasever.voronaStore.payload.response.SortedCartResponse;
-import ru.voronasever.voronaStore.payload.response.SortedProduct;
 import ru.voronasever.voronaStore.services.CartService;
 import ru.voronasever.voronaStore.services.UserService;
-
-import java.util.List;
 
 
 @RestController
@@ -25,8 +22,7 @@ public class CartController {
     @GetMapping()
     @ResponseBody
     ResponseEntity<?> getSortedCart(){
-        //SortedCartResponse sortedCart = cartService.getSortedCart();
-        SortedCartResponse sortedCart = cartService.getSortedCart2();
+        SortedCartResponse sortedCart = cartService.getSortedCart();
 
         return ResponseEntity.ok().body(sortedCart);
     }

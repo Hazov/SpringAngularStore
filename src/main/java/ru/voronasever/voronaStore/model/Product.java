@@ -3,6 +3,8 @@ package ru.voronasever.voronaStore.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
+import ru.voronasever.voronaStore.dto.ProductCsvDto;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -12,6 +14,8 @@ import java.util.Collection;
 @AllArgsConstructor
 @Data
 @Entity(name = "products")
+@Document(indexName = "products")
+
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +32,8 @@ public class Product {
     @ManyToOne()
     @JoinColumn(name = "product_category")
     Category category;
-    @Column(name = "product_count_on_stock")
+    @Column(name = "product_count")
     int countOnStock;
-    @Column(name = "product_reviews")
     @ManyToMany()
     @JoinTable(
             name = "products_reviews",
@@ -38,4 +41,14 @@ public class Product {
             inverseJoinColumns = { @JoinColumn(name = "review_id") }
     )
     Collection<Review> reviews;
+
+
+    public Product(ProductCsvDto productCsv,Category category) {
+        this.article = productCsv.getArticle();
+        this.name = productCsv.getName();
+        this.description = productCsv.getDescription();
+        this.price = productCsv.getPrice();
+        this.category = category;
+        this.countOnStock = productCsv.getCountOnStock();
+    }
 }

@@ -7,13 +7,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voronasever.voronaStore.model.User;
-import ru.voronasever.voronaStore.repositories.IUserRepo;
-import ru.voronasever.voronaStore.secuirty.UserDetailsImpl;
+import ru.voronasever.voronaStore.repositories.jpa.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    IUserRepo userRepository;
+    UserRepository userRepository;
 
     @Override
     @Transactional
